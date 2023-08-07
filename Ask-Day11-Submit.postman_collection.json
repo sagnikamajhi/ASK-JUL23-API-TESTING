@@ -1,0 +1,506 @@
+{
+	"info": {
+		"_postman_id": "3783f5a3-0ec2-44e3-a4ba-0a0a75e248bb",
+		"name": "Ask-Day11-Submit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20326251"
+	},
+	"item": [
+		{
+			"name": "sign-in -[T]",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.get(\"baseUrl\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"teacherToken\", jsonData.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer null"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"sagnika.stage.teacher@gmail.com\",\n    \"password\": \"march0311\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/sign-in",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sign-in -[S]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"studentToken\", jsonData.token);",
+							"pm.environment.set(\"studentId\", jsonData.user.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json, text/plain, */*"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer null"
+					},
+					{
+						"key": "User-Agent",
+						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"asmaryan@tempsky.top\",\n    \"password\": \"12345\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/sign-in",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"sign-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "quiz -[T]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"quizId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sagnika API Testing two\",\n  \"totalScore\": 18,\n  \"passingPercentage\": 75,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "quiz -[T][update]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Sagnika API Testing one - updated 1\",\n  \"totalScore\": 18,\n  \"passingPercentage\": 75,\n  \"showStopperQuestion\": 1,\n  \"questions\": [\n    {\n      \"type\": \"TEXTUAL\",\n      \"question\": \"What is your name [updated]?\",\n      \"score\": 5\n    },\n    {\n      \"type\": \"SINGLE_CHOICE\",\n      \"question\": \"Which city is city largest in California [updated]?\",\n      \"score\": 7,\n      \"answer\": 2,\n      \"hasOtherOption\": false,\n      \"options\": [\n        \"San Francisco\",\n        \"Sacramento\",\n        \"Los Angeles\",\n        \"Redding\"\n      ]\n    },\n    {\n      \"type\": \"MULTIPLE_CHOICE\",\n      \"question\": \"Who was apple founded by[updated]?\",\n      \"score\": 6,\n      \"answers\": [\n        0,\n        1,\n        2\n      ],\n      \"hasOtherOption\": true,\n      \"options\": [\n        \"Steve Jobs\",\n        \"Steve Wozniak\",\n        \"Ronald Wayne\",\n        \"Ronald Reagan\"\n      ]\n    }\n  ] ,\n  \"id\": {{quizId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignment -[T]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"assignmentId\", jsonData[0].id);",
+							"pm.environment.set(\"assignmentGroupID\", jsonData[0].assignmentGroupID);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"quizId\": {{quizId}},\n  \"userIds\": [{{studentId}}]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assignment",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assignment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "my-assignments -[S]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{studentToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/my-assignments",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"my-assignments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit-assignment -[S]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"submit_assignment_id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{studentToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"assignmentId\": {{assignmentId}},\n    \"answers\": [\n        {\n            \"textAnswer\": \"My Test Only\",\n            \"answer\": null\n        },\n        {\n            \"textAnswer\": \"\",\n            \"answer\": 2\n        },\n        {\n            \"textAnswer\": \"\",\n            \"answer\": [\n                1\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/submit-assignment",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"submit-assignment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignment -[T][update]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"summary\": \"API Submit\",\n  \"result\": \"PASSED\",\n  \"grades\": [\n    {\n      \"comment\": \"API Submit\",\n      \"additionalScore\": 15\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assignment/{{assignmentId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assignment",
+						"{{assignmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "my-grades - [S]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{studentToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/my-grades",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"my-grades"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assignment -[T][delete]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/assignment/{{assignmentGroupID}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"assignment",
+						"{{assignmentGroupID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "quiz -[T][delete]",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{teacherToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/quiz/{{quizId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"quiz",
+						"{{quizId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
